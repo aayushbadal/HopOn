@@ -1,5 +1,5 @@
 <?php 
-require_once "./includes/db_header.php";
+require_once "./includes/header.php";
 
 session_destroy();
 header('Location: admin_login.php');

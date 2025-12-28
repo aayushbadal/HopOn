@@ -1,19 +1,55 @@
 <?php
-  require_once"./includes/db_header.php";
-  if(!isLoggedIn()){
-        header('Location: ./admin_login.php');
-        exit();
-  }
-
-
-
-  /* OP USER:
-
-    Username: RamBdr,
-    Password: 123456
-  */
+require_once "./includes/header.php";
+if (!isLoggedIn()) {
+    header('Location: ./admin_login.php');
+    exit();
+}
 ?>
 
+<section class="dashboard-section">
+    <div class="container">
+        <h1 class="section-title">Admin Dashboard</h1>
 
-</body>
-</html>
+        <div class="dashboard-grid">
+            <!-- Routes Card -->
+            <div class="dashboard-card">
+                <div class="card-icon">🛣️</div>
+                <h3>Routes</h3>
+                <p>Manage all available routes</p>
+                <a href="./manage_routes.php" class="card-btn">Manage Routes</a>
+            </div>
+
+            <!-- Vehicles Card -->
+            <div class="dashboard-card">
+                <div class="card-icon">🚌</div>
+                <h3>Vehicles</h3>
+                <p>Manage all buses and vehicles</p>
+                <a href="./manage_bus.php" class="card-btn">Manage Vehicles</a>
+            </div>
+
+            <!-- Schedules Card -->
+            <div class="dashboard-card">
+                <div class="card-icon">📅</div>
+                <h3>Schedules</h3>
+                <p>Manage bus schedules and dates</p>
+                <a href="./manage_schedules.php" class="card-btn">Manage Schedules</a>
+            </div>
+
+            <!-- Users Card -->
+            <div class="dashboard-card">
+                <div class="card-icon">👥</div>
+                <h3>Users</h3>
+                <p>View and manage users</p>
+                <a href="./manage_users.php" class="card-btn">Manage Users</a>
+            </div>
+
+            <!-- Bookings Card -->
+            <div class="dashboard-card">
+                <div class="card-icon">💳</div>
+                <h3>Bookings</h3>
+                <p>View and manage bookings</p>
+                <a href="./manage_bookings.php" class="card-btn">Manage Bookings</a>
+            </div>
+        </div>
+    </div>
+</section>

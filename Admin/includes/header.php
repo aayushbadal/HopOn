@@ -32,7 +32,7 @@ ob_start();
 <header>
   <div class="sidebar-container">
     <div class="nav-bar">
-      <a href="index.php" class="logo">
+      <a href="../index.php" class="logo">
         <img src="./assets/images/Logo.jpg" alt="">
           Hop <span> On</span>
       </a>

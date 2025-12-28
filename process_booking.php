@@ -84,7 +84,7 @@ foreach($booking_seats as $bookingSeat) {
 ?>
 
 <!-- ------------------------------ -->
-<!-- 5️⃣ Show checkout summary -->
+<!--  Show checkout summary -->
 <!-- ------------------------------ -->
 <div class="checkout-container">
   <div class="checkout-card">
