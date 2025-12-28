@@ -68,7 +68,7 @@ ob_start();
         </div>
     </header>
     <div id="searchbar">
-    <form action="search" method="get" class="search-bar">
+    <form action="search.php" method="get" class="search-bar">
         <div class="search-group">
             <label for="start-point">Start:</label>
             <input type="text" name="start-point" id="start-point" placeholder="Enter starting point" required />

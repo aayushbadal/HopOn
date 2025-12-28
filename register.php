@@ -2,7 +2,7 @@
     require_once"./includes/header.php";
 
     if(isLoggedIn()){
-        header('Location: /index');
+        header('Location: /index.php');
         exit();
     }
     if($_SERVER['REQUEST_METHOD'] == "POST"){

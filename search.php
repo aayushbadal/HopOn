@@ -19,7 +19,7 @@ if (isset($_GET['start-point']) && isset($_GET['end-point'])) {
 
 ?>
 
-<section id="vehicles" class="vehicles-section">
+    <section id="vehicles" class="vehicles-section">
         <div class="container">
             <h2 class="section-title">Available Vehicles</h2>
             <div class="vehicles-grid">
@@ -35,23 +35,18 @@ if (isset($_GET['start-point']) && isset($_GET['end-point'])) {
                             </div>
                             
                             
-                                <div class="timing">
+                            <div class="timing">
                                     
-                                        <span> <?= $vehicle['starttime'] ?> - - To - - </span>
-                                    
-                                    
-                                        <span> <?= $vehicle['endtime'] ?></span>
-                                    
+                                <span> <?= $vehicle['starttime'] ?> - - To - - </span>
+                                <span> <?= $vehicle['endtime'] ?></span>
+                            </div>
+                            <div class="pricing">
+                                <div class="price">
+                                    <span>NPR <?= $vehicle['price'] ?></span>
                                 </div>
-                                <div class="pricing">
-                                    <div class="price">
-                                        <span>NPR <?= $vehicle['price'] ?></span>
-                                    </div>
-                                </div>
-                                    
-                                
+                            </div>
                         </div>
-                        <a href="booking?vehicleId=<?= $vehicle['id'] ?>" class="book-btn">Book</a>
+                        <a href="booking.php?vehicleId=<?= $vehicle['id'] ?>" class="book-btn">Book</a>
                     </div>
                 </div>
                 <?php endforeach; ?>

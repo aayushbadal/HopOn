@@ -75,3 +75,9 @@ CREATE TABLE IF NOT EXISTS op_users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
+
+
+ALTER TABLE bookings
+ADD payment_status VARCHAR(20) DEFAULT 'PENDING',
+ADD payment_ref VARCHAR(100),
+ADD payment_method VARCHAR(20);
