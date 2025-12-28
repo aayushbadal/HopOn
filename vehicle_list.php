@@ -17,7 +17,7 @@ require_once "./includes/header.php";
                 <!-- vehicles -->
                 <?php foreach($vehicle_list as $vehicle):?>
                 <div class="vehicle-card">
-                    <img src="<?=$vehicle['image_url']?>" class="vehicle-poster" alt="">
+                    <img src="./assets/images/Bus.png" class="vehicle-poster" alt="">
                     <div class="vehicle-details">
                         <div class="vehicle-info">
                             <div class="start-to-end">

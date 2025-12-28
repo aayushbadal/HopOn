@@ -45,7 +45,7 @@ $occupiedSeatsJson = json_encode($occupiedSeats);
                 <?php $vehicle = $vehicle_list[0]; ?>
                 <div class="bus-detail">
                     <div class="booking-poster">
-                        <img src="<?= htmlspecialchars($vehicle['image_url']) ?>" alt="">
+                        <img src="./assets/images/Bus.png" alt="">
                     </div>
                     <div class="booking-details">
                         <h2 class="booking-title"><?= htmlspecialchars($vehicle['startin']) ?> To <?= htmlspecialchars($vehicle['destination']) ?></h2>
