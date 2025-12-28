@@ -37,6 +37,9 @@ ob_start();
           Hop <span> On</span>
       </a>
       <div class="navbar-link">
+        <?php if(isset($_SESSION['user_id'])): ?>
+          <span> <i class="fa-etch fa-solid fa-user"></i> <?= getUsername() ?> </span>
+        <?php endif; ?>
         <a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
         <a href="manage_routes.php"><i class="fas fa-route"></i> Routes</a>
         <a href="manage_bus.php"><i class="fas fa-bus"></i> Manage Buses</a>

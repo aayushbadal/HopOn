@@ -13,7 +13,7 @@ if (!isLoggedIn()) {
         <div class="dashboard-grid">
             <!-- Routes Card -->
             <div class="dashboard-card">
-                <div class="card-icon">🛣️</div>
+                <div class="card-icon"><i class="fas fa-route"></i></div>
                 <h3>Routes</h3>
                 <p>Manage all available routes</p>
                 <a href="./manage_routes.php" class="card-btn">Manage Routes</a>
@@ -21,15 +21,15 @@ if (!isLoggedIn()) {
 
             <!-- Vehicles Card -->
             <div class="dashboard-card">
-                <div class="card-icon">🚌</div>
-                <h3>Vehicles</h3>
+                <div class="card-icon"><i class="fas fa-bus"></i></div>
+                <h3>Buses</h3>
                 <p>Manage all buses and vehicles</p>
-                <a href="./manage_bus.php" class="card-btn">Manage Vehicles</a>
+                <a href="./manage_bus.php" class="card-btn">Manage Buses</a>
             </div>
 
             <!-- Schedules Card -->
             <div class="dashboard-card">
-                <div class="card-icon">📅</div>
+                <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
                 <h3>Schedules</h3>
                 <p>Manage bus schedules and dates</p>
                 <a href="./manage_schedules.php" class="card-btn">Manage Schedules</a>
@@ -37,7 +37,7 @@ if (!isLoggedIn()) {
 
             <!-- Users Card -->
             <div class="dashboard-card">
-                <div class="card-icon">👥</div>
+                <div class="card-icon"><i class="fas fa-users"></i></div>
                 <h3>Users</h3>
                 <p>View and manage users</p>
                 <a href="#" class="card-btn">Manage Users</a>
@@ -45,7 +45,7 @@ if (!isLoggedIn()) {
 
             <!-- Bookings Card -->
             <div class="dashboard-card">
-                <div class="card-icon">💳</div>
+                <div class="card-icon"><i class="fas fa-ticket-alt"></i></div>
                 <h3>Bookings</h3>
                 <p>View and manage bookings</p>
                 <a href="#" class="card-btn">Manage Bookings</a>

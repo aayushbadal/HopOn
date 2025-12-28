@@ -87,6 +87,21 @@ header{
   transform: translateY(-10px);
 }
 
+.navbar-link span {
+  color: var(--font);
+  display: block;
+  margin-bottom: 30px;
+  padding: 12px;
+  text-decoration: none;
+  transition: transform 0.3s;
+}
+
+.navbar-link span:hover{
+  color: var(--bg);
+  transform: translateY(-10px);
+}
+
+
 
 
 
@@ -264,6 +279,9 @@ header{
     font-size: 40px;
 }
 
+.card-icon i{
+  color: var(--primary);
+}
 
 /*manage routes style */
 

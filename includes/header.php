@@ -52,7 +52,7 @@ ob_start();
                         <i class="fas fa-user"></i>
                         <div class="dropdown">
                         <?php if(isset($_SESSION['user_id'])): ?>
-                            <span> <img src="./assets/images/profile.jpg" alt=""><?= getUsername() ?></span>
+                            <span> <i class="fa-regular fa-user"></i><?= getUsername() ?></span>
                             <a href="mybookings.php">My Bookings</a>
                             <a href="logout.php">Logout</a>
                         <?php else: ?>
