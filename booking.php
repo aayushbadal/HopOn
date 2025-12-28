@@ -68,7 +68,7 @@ $occupiedSeatsJson = json_encode($occupiedSeats);
                     <input type="hidden" name="total_price" id="total-price" value="0">
 
                     <div class="form-group">
-                        <label for="">Select Date</label>
+                        <label for="" style="color:black;">Select Date</label>
                         <select name="route_date_id" required>
                             <?php foreach($route_dates as $routedate): ?>
                                 <option value="<?= $routedate['id'] ?>"><?= date('d/m/Y', strtotime($routedate['routing_date'])) ?></option>
@@ -88,7 +88,7 @@ $occupiedSeatsJson = json_encode($occupiedSeats);
                         <strong>Total Price: </strong><span>Rs. 0</span>
                     </div>
 
-                    <button type="submit" class="confirm-btn">Confirm Booking</button>
+                    <button type="submit" id="pay-button" class="confirm-btn">Confirm Booking</button>
                 </form>
             <?php else: ?>
                 <p>No vehicle details found.</p>
@@ -97,7 +97,17 @@ $occupiedSeatsJson = json_encode($occupiedSeats);
     </div>
 </section>
 
+
 <script>
+
+document.getElementById('booking-form').addEventListener('submit', function (e) {
+    if (selectedSeats.length === 0) {
+        alert("Please select at least one seat!");
+        e.preventDefault(); // stop form submission
+    }
+});
+
+
 const busTicketPrice = <?= $vehicle['price'] ?>;
 const totalSeats = <?= $vehicle['total_seats'] ?: 33 ?>;
 const occupiedSeats = <?= $occupiedSeatsJson ?>;
@@ -149,6 +159,9 @@ function updateBookingSummary() {
     if (totalDisplay) {
         totalDisplay.textContent = "Rs. " + (selectedSeats.length * busTicketPrice);
     }
+
+    
+
 }
 </script>
 

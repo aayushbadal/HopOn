@@ -431,3 +431,32 @@ header{
 .delete-btn:hover{
     background-color: #c0392b;
 }
+
+.delete-btn-schedule{
+    margin-top: 10px;
+    padding: 8px 12px;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.delete-btn-schedule a{
+  margin-top: 50px;
+  padding: 8px 12px;
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s;
+  text-decoration: none;
+}
+
+.delete-btn-schedule a:hover{
+    background-color: #c0392b;
+}
+

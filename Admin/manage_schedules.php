@@ -86,7 +86,7 @@ if (isset($_GET['delete_id'])) {
                             <div class="veh-no">
                                 Vehicle: <?= $schedule['vehicle_number'] ?>
                             </div>
-                            <div class="delete-btn">
+                            <div class="delete-btn-schedule">
                                 <a href="?delete_id=<?= $schedule['schedule_id'] ?>" onclick="return confirm('Are you sure to delete this schedule?');">
                                     Delete
                                 </a>
