@@ -40,7 +40,7 @@ if (!isLoggedIn()) {
                 <div class="card-icon">👥</div>
                 <h3>Users</h3>
                 <p>View and manage users</p>
-                <a href="./manage_users.php" class="card-btn">Manage Users</a>
+                <a href="#" class="card-btn">Manage Users</a>
             </div>
 
             <!-- Bookings Card -->
@@ -48,7 +48,7 @@ if (!isLoggedIn()) {
                 <div class="card-icon">💳</div>
                 <h3>Bookings</h3>
                 <p>View and manage bookings</p>
-                <a href="./manage_bookings.php" class="card-btn">Manage Bookings</a>
+                <a href="#" class="card-btn">Manage Bookings</a>
             </div>
         </div>
     </div>
