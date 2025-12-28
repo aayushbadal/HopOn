@@ -1,5 +1,5 @@
 <?php
-require_once"../config/db_connect.php";
+require_once"./config/db_connect.php";
 if(session_status() == PHP_SESSION_NONE){
     session_name('auth');
     session_start();
