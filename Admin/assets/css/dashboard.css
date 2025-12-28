@@ -41,11 +41,14 @@ header{
 }
 
 .sidebar-container{
-  width: 300px;
-  margin: 0 auto;
-  padding: 20px 20px;
-  min-height: 100vh;
-  max-height: 200vh;
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: var(--primary);
+  overflow-y: auto;
+  padding: 20px;
 }
 
 
@@ -202,9 +205,8 @@ header{
 
 
 .dashboard-section {
-    padding: 50px 20px;
-    min-height: 80vh;
-    background-color: var(--secondary);
+  margin-left: 270px;
+  padding: 20px;
 }
 
 .section-title {
@@ -285,6 +287,10 @@ header{
 
 /*manage routes style */
 
+.routes-section{
+  margin-left: 270px;
+  padding: 20px;
+}
 
 .section-title{
   font-size: 32px;
@@ -326,6 +332,10 @@ header{
 
 /*manage vehicle style */
 
+.vehicle-section{
+  margin-left: 270px;
+  padding: 20px;
+}
 
 .section-title{
   font-size: 32px;
