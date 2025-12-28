@@ -1,5 +1,19 @@
 <?php
-    require_once"./includes/db_header.php";
+    require_once"../config/db_connect.php";
+if(session_status() == PHP_SESSION_NONE){
+    session_name('auth');
+    session_start();
+}
+
+function isLoggedIn(){
+    return isset($_SESSION['user_id']);
+}
+
+function getUsername(){
+    return isset($_SESSION['username']) ? $_SESSION['username'] : null;
+}
+
+ob_start();
 
     if(isLoggedIn()){
         header('Location: ./dashboard.php');
@@ -37,6 +51,21 @@
         }
     }
 ?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HopOn - Operator Dashboard</title>
+  <link rel="stylesheet" href="./assets/css/dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="icon" type="image/jpg" href="./assets/images/Logo.jpg">
+</head>
+<body>
+
+
 
 <section class="form-section">
     <div class="container">

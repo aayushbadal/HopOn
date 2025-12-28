@@ -14,39 +14,78 @@ if($_SERVER["REQUEST_METHOD"] != "POST"){
 $user_id = $_SESSION['user_id'];
 $vehicle_id = $_POST['vehicle_id'];
 $route_date_id = $_POST['route_date_id'];
-$selected_seats = $_POST['selected_seats'];
-$total_price = $_POST['total_price'];
-$booking_reference = "BK". time() .rand(1000,9999);
+$selected_seats = $_POST['selected_seats']; // e.g., "1,2,5"
+$booking_reference = "BK". time() . rand(1000,9999);
 
-// Fetch route_id from vehicle_lists using vehicle_id
-$route_query = "SELECT route_id FROM vehicle_lists WHERE id = ?";
+// ------------------------------
+// 1️⃣ Fetch price per seat and route_id from database
+// ------------------------------
+$route_query = "
+    SELECT routes.price, routes.id AS route_id
+    FROM routes
+    INNER JOIN vehicle_lists ON routes.id = vehicle_lists.route_id
+    WHERE vehicle_lists.id = ?
+";
+
 $stmt_route = mysqli_prepare($conn, $route_query);
+if (!$stmt_route) {
+    die("Prepare failed: " . mysqli_error($conn));
+}
+
 mysqli_stmt_bind_param($stmt_route, "i", $vehicle_id);
 mysqli_stmt_execute($stmt_route);
-mysqli_stmt_bind_result($stmt_route, $route_id);
+mysqli_stmt_bind_result($stmt_route, $pricePerSeat, $route_id);
 mysqli_stmt_fetch($stmt_route);
 mysqli_stmt_close($stmt_route);
 
-// Now insert into bookings
-$booking_query = "INSERT INTO bookings 
-(user_id, route_id, vehicle_id, route_date_id, booking_reference, total_amount, booking_date) 
-VALUES (?, ?, ?, ?, ?, ?, NOW())";
+// ------------------------------
+// 2️⃣ Calculate total price
+// ------------------------------
+$seatCount = count(array_filter(explode(",", $selected_seats))); // safe in case of empty strings
+$total_price = $seatCount * $pricePerSeat;
 
-$stmt = mysqli_prepare($conn, $booking_query);
-mysqli_stmt_bind_param($stmt, "iiiisi", $user_id, $route_id, $vehicle_id, $route_date_id, $booking_reference, $total_price);
-mysqli_stmt_execute($stmt);
+// ------------------------------
+// 3️⃣ Insert into bookings table
+// ------------------------------
+$booking_query = "
+    INSERT INTO bookings 
+    (user_id, route_id, vehicle_id, route_date_id, booking_reference, total_amount, booking_date)
+    VALUES (?, ?, ?, ?, ?, ?, NOW())
+";
+
+$stmt_booking = mysqli_prepare($conn, $booking_query);
+if (!$stmt_booking) {
+    die("Prepare failed: " . mysqli_error($conn));
+}
+
+mysqli_stmt_bind_param($stmt_booking, "iiiisi", $user_id, $route_id, $vehicle_id, $route_date_id, $booking_reference, $total_price);
+mysqli_stmt_execute($stmt_booking);
 
 $booking_id = mysqli_insert_id($conn);
+mysqli_stmt_close($stmt_booking);
 
-// Insert each seat
+// ------------------------------
+// 4️⃣ Insert each selected seat
+// ------------------------------
 $booking_seats = explode(",", $selected_seats);
 foreach($booking_seats as $bookingSeat) {
-    $booking_seat_query = "INSERT INTO booking_seats(booking_id, seat_number) VALUES(?,?)";
-    $show_stmt = mysqli_prepare($conn, $booking_seat_query);
-    mysqli_stmt_bind_param($show_stmt, "is", $booking_id, $bookingSeat);
-    mysqli_stmt_execute($show_stmt);
+    $bookingSeat = trim($bookingSeat);
+    if ($bookingSeat === '') continue; // skip empty values
+
+    $booking_seat_query = "INSERT INTO booking_seats (booking_id, seat_number) VALUES (?, ?)";
+    $stmt_seat = mysqli_prepare($conn, $booking_seat_query);
+    if (!$stmt_seat) {
+        die("Prepare failed: " . mysqli_error($conn));
+    }
+    mysqli_stmt_bind_param($stmt_seat, "is", $booking_id, $bookingSeat);
+    mysqli_stmt_execute($stmt_seat);
+    mysqli_stmt_close($stmt_seat);
 }
 ?>
+
+<!-- ------------------------------ -->
+<!-- 5️⃣ Show checkout summary -->
+<!-- ------------------------------ -->
 <div class="checkout-container">
   <div class="checkout-card">
     <h2 class="checkout-title">Checkout</h2>
@@ -64,5 +103,3 @@ foreach($booking_seats as $bookingSeat) {
     </form>
   </div>
 </div>
-
-

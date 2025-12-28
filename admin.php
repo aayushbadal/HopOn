@@ -1,10 +1,10 @@
 <?php
-    require_once"./includes/db_header.php";
+    require_once"./Admin/includes/db_header.php";
 
     if(isLoggedIn()){
-        header('Location: ./dashboard.php');
+        header('Location: ./Admin/dashboard.php');
         exit();
     }
 
-    header('Location:./admin_login.php');
+    header('Location:./Admin/admin_login.php');
     exit();

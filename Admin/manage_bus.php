@@ -1,5 +1,9 @@
 <?php
 require_once "./includes/db_header.php";
+if(!isLoggedIn()){
+        header('Location: ./admin_login.php');
+        exit();
+}
 
 // Fetch all vehicles with routes
 $query = "SELECT * FROM routes, vehicle_lists WHERE routes.id = vehicle_lists.route_id";

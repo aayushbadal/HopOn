@@ -51,7 +51,7 @@
                         mysqli_stmt_bind_param($insert_stmt, "ssss", $username, $email, $full_name, $password);
                         if (mysqli_stmt_execute($insert_stmt)){
                             // Redirect to login page
-                            header('Location:./login');
+                            header('Location:./login.php');
                             exit();
                         } else{
                             $errormessage = "Registration fail";
@@ -74,7 +74,7 @@
             <h2 class="form-title">Create an Account</h2>
             
             <div id="cust-form">
-                <form action="register" method="POST" id="register-form">
+                <form action="register.php" method="POST" id="register-form">
                 <div class="form-group">
                     <label for="">Full Name</label>
                     <input type="text" name="full_name" required/>

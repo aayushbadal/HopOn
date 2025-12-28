@@ -6,7 +6,24 @@ if (isset($_GET['start-point']) && isset($_GET['end-point'])) {
     $end = trim($_GET['end-point']);
 
     // Prepare statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT * FROM routes,vehicle_lists WHERE routes.startin = ? AND routes.destination = ?");
+$stmt = $conn->prepare("
+    SELECT 
+        vehicle_lists.id,
+        vehicle_lists.image_url,
+        vehicle_lists.starttime,
+        vehicle_lists.endtime,
+        routes.startin,
+        routes.destination,
+        routes.price 
+    FROM routes
+    INNER JOIN vehicle_lists 
+        ON routes.id = vehicle_lists.route_id
+    WHERE routes.startin = ? 
+      AND routes.destination = ?
+");
+
+
+
     $stmt->bind_param("ss", $start, $end);
     $stmt->execute();
 

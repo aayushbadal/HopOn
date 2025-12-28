@@ -29,45 +29,53 @@ $bookings = mysqli_fetch_all($result, MYSQLI_ASSOC);
 mysqli_stmt_close($stmt);
 ?>
 
-<div class="book-container">
-  <h2>My Bookings</h2>
+<div class="bookings-section">
+  <div class="container">
+    <h2 class="section-title">My Bookings</h2>
 
-  <?php if(!$bookings || count($bookings) == 0): ?>
-    <p>You have no bookings yet. <a href="routes.php">Book a ride now</a>.</p>
-  <?php else: ?>
-    <div class="bookings-list">
-      <?php foreach($bookings as $b): ?>
-        <?php
-          // Fetch seats for this booking
-          $seat_query = "SELECT seat_number FROM booking_seats WHERE booking_id = ?";
-          $sstmt = mysqli_prepare($conn, $seat_query);
-          mysqli_stmt_bind_param($sstmt, "i", $b['id']);
-          mysqli_stmt_execute($sstmt);
-          $sres = mysqli_stmt_get_result($sstmt);
-          $seat_rows = mysqli_fetch_all($sres, MYSQLI_ASSOC);
-          mysqli_stmt_close($sstmt);
-          $seat_list = array_map(function($r){ return $r['seat_number']; }, $seat_rows);
-          $seat_display = implode(", ", $seat_list);
-        ?>
-        <div class="booking-card">
-          <div class="booking-row">
-            <div class="booking-left">
-              <div class="booking-ref">Reference: <strong><?= htmlspecialchars($b['booking_reference']) ?></strong></div>
-              <div class="booking-route"><?= htmlspecialchars($b['startin']) ?> → <?= htmlspecialchars($b['destination']) ?></div>
-              <div class="booking-vehicle"><?= htmlspecialchars($b['vehicle_number']) ?> — NPR <?= number_format($b['total_amount'],2) ?></div>
-              <div class="booking-seats">Seats: <?= htmlspecialchars($seat_display) ?></div>
+    <?php if(empty($bookings)): ?>
+      <p class="no-bookings">You have no bookings yet. <a href="routes.php">Book a ride now</a>.</p>
+    <?php else: ?>
+      <div class="bookings-grid">
+        <?php foreach($bookings as $b): ?>
+          <?php
+            // Fetch seats for this booking
+            $seat_query = "SELECT seat_number FROM booking_seats WHERE booking_id = ?";
+            $sstmt = mysqli_prepare($conn, $seat_query);
+            mysqli_stmt_bind_param($sstmt, "i", $b['id']);
+            mysqli_stmt_execute($sstmt);
+            $sres = mysqli_stmt_get_result($sstmt);
+            $seat_rows = mysqli_fetch_all($sres, MYSQLI_ASSOC);
+            mysqli_stmt_close($sstmt);
+            $seat_list = array_map(fn($r) => $r['seat_number'], $seat_rows);
+            $seat_display = implode(", ", $seat_list);
+          ?>
+          <div class="booking-card">
+            <div class="booking-header">
+              <span class="booking-ref">Ref: <?= htmlspecialchars($b['booking_reference']) ?></span>
+              <span class="booking-date"><?= date('M j, Y', strtotime($b['booking_date'])) ?></span>
             </div>
-            <div class="booking-right">
-              <div class="booking-date"><?= date('F j, Y, g:i a', strtotime($b['booking_date'])) ?></div>
-              <a class="b-btn view-btn" href="booking_view.php?id=<?= $b['id'] ?>">View</a>
-              <a class="b-btn download-btn" href="booking_invoice.php?id=<?= $b['id'] ?>">Invoice</a>
+            <div class="booking-body">
+              <div class="route-info">
+                <strong><?= htmlspecialchars($b['startin']) ?> → <?= htmlspecialchars($b['destination']) ?></strong>
+                <p>Vehicle: <?= htmlspecialchars($b['vehicle_number']) ?></p>
+                <p>Seats: <?= htmlspecialchars($seat_display) ?></p>
+              </div>
+              <div class="amount">
+                <p>Total: <strong>NPR <?= number_format($b['total_amount'], 2) ?></strong></p>
+              </div>
+            </div>
+            <div class="booking-actions">
+              <a class="view-btn" href="booking_view.php?id=<?= $b['id'] ?>">View</a>
+              <a class="invoice-btn" href="booking_invoice.php?id=<?= $b['id'] ?>">Invoice</a>
             </div>
           </div>
-        </div>
-      <?php endforeach; ?>
-    </div>
-  <?php endif; ?>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
+  </div>
 </div>
+
 <?php
 require_once "./includes/footer.php";
 ?>
