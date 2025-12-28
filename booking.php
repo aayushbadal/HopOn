@@ -92,7 +92,7 @@ $vehicle_id = isset($_GET['vehicleId']) ? $_GET['vehicleId'] : 1;
                         <!-- Seats will be generated here by JavaScript -->
                     </div> 
                 </div>
-                <button type="submit" class="confirm-btn">Confirm Button</button>
+                <button type="submit" class="confirm-btn">Confirm Booking</button>
             </form>
         </div>
     </div>
