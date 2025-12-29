@@ -53,10 +53,10 @@ if (!isLoggedIn()) {
 
             <!-- LogOut Card -->
              <div class="dashboard-card">
-                <div class="card-icon"><i class="fas fa-sign-out-alt"></i></div>
-                <h3>LogOut</h3>
-                <p>Logout from Admin Panel</p>
-                <a href="admin_logout.php" class="card-btn">Logout</a>
+                <div class="card-icon"><i class="fas fa-credit-card"></i></div>
+                <h3>Payment</h3>
+                <p>View and manage payments</p>
+                <a href="manage_payments.php" class="card-btn">Manage Payments</a>
             </div>
         </div>
     </div>
