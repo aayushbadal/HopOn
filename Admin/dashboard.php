@@ -40,7 +40,7 @@ if (!isLoggedIn()) {
                 <div class="card-icon"><i class="fas fa-users"></i></div>
                 <h3>Users</h3>
                 <p>View and manage users</p>
-                <a href="#" class="card-btn">Manage Users</a>
+                <a href="manage_users.php" class="card-btn">Manage Users</a>
             </div>
 
             <!-- Bookings Card -->
@@ -48,7 +48,15 @@ if (!isLoggedIn()) {
                 <div class="card-icon"><i class="fas fa-ticket-alt"></i></div>
                 <h3>Bookings</h3>
                 <p>View and manage bookings</p>
-                <a href="#" class="card-btn">Manage Bookings</a>
+                <a href="manage_bookings.php" class="card-btn">Manage Bookings</a>
+            </div>
+
+            <!-- LogOut Card -->
+             <div class="dashboard-card">
+                <div class="card-icon"><i class="fas fa-sign-out-alt"></i></div>
+                <h3>LogOut</h3>
+                <p>Logout from Admin Panel</p>
+                <a href="admin_logout.php" class="card-btn">Logout</a>
             </div>
         </div>
     </div>

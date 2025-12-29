@@ -21,10 +21,13 @@ ob_start();
 <head>
   <meta charset="UTF-8">
   <title>HopOn - Operator Dashboard</title>
-  <link rel="stylesheet" href="./assets/css/dashboard.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./assets/css/dashboard.css">
 
-  <link rel="icon" type="image/jpg" href="./assets/images/Logo.jpg">
+  <link rel="icon" type="image/jpg" href="../assets/images/Logo.jpg">
 </head>
 <body>
 
@@ -44,10 +47,9 @@ ob_start();
         <a href="manage_routes.php"><i class="fas fa-route"></i> Routes</a>
         <a href="manage_bus.php"><i class="fas fa-bus"></i> Manage Buses</a>
         <a href="manage_schedules.php"><i class="fas fa-calendar-alt"></i> Schedules</a>
-        <a href="#"><i class="fas fa-ticket-alt"></i> Bookings</a>
-        <a href="#"><i class="fas fa-users"></i> Customers</a>
-        <a href="#"><i class="fas fa-credit-card"></i> Payments</a>
-        <a href="#"><i class="fas fa-cogs"></i> Settings</a>
+        <a href="manage_bookings.php"><i class="fas fa-ticket-alt"></i> Bookings</a>
+        <a href="manage_users.php"><i class="fas fa-users"></i> Customers</a>
+        <a href="manage_payments.php"><i class="fas fa-credit-card"></i> Payments</a>
         <a href="admin_logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
       </div>
     </div>

@@ -67,7 +67,9 @@ mysqli_stmt_close($stmt);
             </div>
             <div class="booking-actions">
               <a class="view-btn" href="booking_view.php?id=<?= $b['id'] ?>">View</a>
+              <!--
               <a class="invoice-btn" href="booking_invoice.php?id=<?= $b['id'] ?>">Invoice</a>
+        -->
             </div>
           </div>
         <?php endforeach; ?>

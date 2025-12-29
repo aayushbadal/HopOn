@@ -74,6 +74,7 @@ if (isset($_GET['delete_id'])) {
         <div class="routes-grid">
             <?php foreach ($schedules as $schedule): ?>
                 <div class="route-card">
+                    <img src="./assets/images/Bus.png" class="vehicle-poster" alt="">
                     <div class="route-details">
                         <div class="route-info">
                             <div class="start-to-end">
@@ -106,6 +107,7 @@ if (isset($_GET['delete_id'])) {
                 <div class="add-group">
                     <label for="vehicle_id">Select Vehicle</label>
                     <select name="vehicle_id" id="vehicle_id" required>
+                        <option value="" disabled selected hidden>Select your Vehicle</option>
                         <?php foreach ($vehicles as $vehicle): ?>
                             <option value="<?= $vehicle['id'] ?>"><?= $vehicle['vehicle_number'] ?></option>
                         <?php endforeach; ?>

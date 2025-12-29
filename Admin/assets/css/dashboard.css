@@ -13,7 +13,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
+  font-family:'Roboto', sans-serif;
 }
 
 body {
@@ -285,6 +285,9 @@ header{
   color: var(--primary);
 }
 
+
+
+
 /*manage routes style */
 
 .routes-section{
@@ -371,6 +374,22 @@ header{
 
 .vehicle-card:hover{
   transform: translateY(-10px);
+}
+
+select {
+  background-color: #ffffff;
+  border: 2px solid #0c92b4;
+  color: #0c92b4;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+select:hover {
+  background-color: #0c92b4;
+  color: #fff;
 }
 
 /*Add Section */
@@ -488,3 +507,218 @@ header{
     background-color: #c0392b;
 }
 
+
+/* ================================
+   USER MANAGEMENT (ADMIN PANEL)
+================================ */
+
+/* Section */
+
+.section-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #2c3e50;
+    text-align: center;
+}
+
+/* ================================
+   USERS TABLE
+================================ */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.admin-table thead {
+    background: #34495e;
+}
+
+.admin-table th {
+    padding: 15px;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.8px;
+}
+
+.admin-table td {
+    padding: 14px 15px;
+    font-size: 15px;
+    color: #2c3e50;
+    border-bottom: 1px solid #eee;
+}
+
+.admin-table tbody tr {
+    transition: background 0.3s ease;
+}
+
+.admin-table tbody tr:hover {
+    background: #f1f5f9;
+}
+
+.admin-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ================================
+   BUTTONS
+================================ */
+.view-btn,
+.invoice-btn {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* View / Back Button */
+.view-btn {
+    background: #3498db;
+    color: #ffffff;
+}
+
+.view-btn:hover {
+    background: #2980b9;
+}
+
+/* Delete Button */
+.invoice-btn {
+    background: #e74c3c;
+    color: #ffffff;
+    margin-right: 10px;
+}
+
+.invoice-btn:hover {
+    background: #c0392b;
+}
+
+
+/* ================================
+   USER DETAILS CARD
+================================ */
+.booking-card {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.booking-card p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+.booking-card strong {
+    color: #34495e;
+}
+
+/* ================================
+   ACTION BUTTONS
+================================ */
+.booking-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+/* ================================
+   EMPTY / ERROR MESSAGE
+================================ */
+.empty-msg {
+    text-align: center;
+    font-size: 16px;
+    color: #777;
+    padding: 30px;
+}
+
+/* ================================
+   RESPONSIVE DESIGN
+================================ */
+@media (max-width: 768px) {
+
+    .admin-table thead {
+        display: none;
+    }
+
+    .admin-table,
+    .admin-table tbody,
+    .admin-table tr,
+    .admin-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .admin-table tr {
+        margin-bottom: 15px;
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .admin-table td {
+        border: none;
+        padding: 10px 0;
+        position: relative;
+        font-size: 14px;
+    }
+
+    .admin-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #555;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .booking-actions {
+        flex-direction: column;
+    }
+
+    .view-btn,
+    .invoice-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+
+
+/* Bookings */
+
+
+    .btn-approve {
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .btn-approve:hover {
+        background-color: #218838;
+    }
+    .btn-undo {
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .btn-undo:hover {
+        background-color: #c82333;
+    }

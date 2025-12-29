@@ -24,10 +24,9 @@ CREATE TABLE IF NOT EXISTS vehicle_lists(
     endtime TEXT NOT NULL,
     vehicle_number TEXT,
     facilities TEXT,
-    image_url VARCHAR(255),
     driver_name VARCHAR(255) NOT NULL,
     driver_phone_number TEXT NOT NULL,
-    total_seats INT NOT NULL,
+    total_seats INT NOT NULL DEFAULT 33,
     available_seats INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (route_id) REFERENCES routes(id) ON DELETE CASCADE
@@ -51,13 +50,16 @@ CREATE TABLE IF NOT EXISTS bookings(
     booking_reference VARCHAR(20) NOT NULL,
     total_amount DECIMAL(10,2) NOT NULL,
     booking_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    status VARCHAR(50) DEFAULT 'CONFIRMED',
+    payment_status VARCHAR(20) DEFAULT 'PENDING',
+    payment_ref VARCHAR(100),
+    payment_method VARCHAR(20),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (route_id) REFERENCES routes(id) ON DELETE CASCADE,
     FOREIGN KEY (vehicle_id) REFERENCES vehicle_lists(id) ON DELETE CASCADE,
     FOREIGN KEY (route_date_id) REFERENCES route_date(id) ON DELETE CASCADE
 
 );
+
 CREATE TABLE IF   NOT EXISTS booking_seats
 (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -76,8 +78,3 @@ CREATE TABLE IF NOT EXISTS op_users (
     PRIMARY KEY (id)
 );
 
-
-ALTER TABLE bookings
-ADD payment_status VARCHAR(20) DEFAULT 'PENDING',
-ADD payment_ref VARCHAR(100),
-ADD payment_method VARCHAR(20);

@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !isset($_POST['delete_id'])) {
         <div class="vehicle-grid">
             <?php foreach($vehicles as $vehicle):?>
             <div class="vehicle-card">
-                <img src="<?=$vehicle['image_url']?>" class="vehicle-poster" alt="">
+                <img src="./assets/images/Bus.png" class="vehicle-poster" alt="">
                 <div class="vehicle-details">
                     <div class="vehicle-info">
                       <div class="start-to-end">
@@ -126,6 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !isset($_POST['delete_id'])) {
         <div class="add-group">
             <label for="">Starting City</label>
             <select name="startin" id="route-start">
+                <option value="" disabled selected hidden>Select your Starting City</option>
                 <?php 
                   $startCities = array_unique(array_column($routes, 'startin'));
                   foreach($startCities as $city): ?>
@@ -136,7 +137,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !isset($_POST['delete_id'])) {
 
         <div class="add-group">
             <label for="">Destination City</label>
-            <select name="destination" id="route-destination">
+            <select name="destination" id="route-destination" >
+                <option value="" disabled selected hidden>Select your Destination City</option>
                 <?php 
                   $destCities = array_unique(array_column($routes, 'destination'));
                   foreach($destCities as $city): ?>
