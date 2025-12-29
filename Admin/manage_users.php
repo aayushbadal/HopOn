@@ -18,16 +18,17 @@ $result = $conn->query($sql);
         <table class="admin-table">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>No.</th>
                     <th>Username</th>
                     <th>Email</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
+                <?php $i = 1; ?>
                 <?php while ($user = $result->fetch_assoc()): ?>
-                <tr>
-                    <td><?= $user['id'] ?></td>
+                <tr>   
+                    <td><?= $i ?></td>
                     <td><?= htmlspecialchars($user['username']) ?></td>
                     <td><?= htmlspecialchars($user['email']) ?></td>
                     <td>
@@ -35,6 +36,7 @@ $result = $conn->query($sql);
                             Details
                         </a>
                     </td>
+                    <?php $i++;  ?>
                 </tr>
                 <?php endwhile; ?>
             </tbody>
