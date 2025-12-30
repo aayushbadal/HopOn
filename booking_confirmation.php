@@ -18,7 +18,7 @@ $route_id          = intval($_POST['route_id']);
 $route_date_id     = intval($_POST['route_date_id']);
 $selected_seats    = trim($_POST['selected_seats']);
 $total_price       = floatval($_POST['total_price']);
-$payment_method    = trim($_POST['payment_method']);
+$payment_method    = 'KHALTI';
 $booking_reference = trim($_POST['booking_reference']);
 
 if (
@@ -37,23 +37,26 @@ try {
 
     /* ---- INSERT BOOKING ---- */
     $booking_sql = "
-        INSERT INTO bookings
-        (user_id, route_id, vehicle_id, route_date_id, booking_reference,
-         total_amount, payment_method, booking_date)
-        VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
+        INSERT INTO bookings (
+        user_id, route_id, vehicle_id, route_date_id,
+        booking_reference, total_amount,
+        payment_method, payment_status, payment_ref, booking_date
+        )
+        VALUES (?, ?, ?, ?, ?, ?, 'KHALTI', 'PAID', ?, NOW())
     ";
 
     $stmt = $conn->prepare($booking_sql);
     $stmt->bind_param(
-        "iiiisds",
-        $user_id,
-        $route_id,
-        $vehicle_id,
-        $route_date_id,
-        $booking_reference,
-        $total_price,
-        $payment_method
+    "iiiisds",
+    $user_id,
+    $route_id,
+    $vehicle_id,
+    $route_date_id,
+    $booking_reference,
+    $total_price,
+    $payment_ref
     );
+
     $stmt->execute();
     $booking_id = $conn->insert_id;
     $stmt->close();

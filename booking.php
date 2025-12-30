@@ -62,7 +62,7 @@ $occupiedSeatsJson = json_encode($occupiedSeats);
                     </div>
                 </div>
 
-                <form action="./process_booking.php" method="POST" id="booking-form">
+                <form action="./esewa_process_booking.php" method="POST" id="booking-form">
                     <input type="hidden" name="vehicle_id" value="<?= $vehicle_id ?>">
                     <input type="hidden" name="selected_seats" id="selected-seats" value="">
                     <input type="hidden" name="total_price" id="total-price" value="0">

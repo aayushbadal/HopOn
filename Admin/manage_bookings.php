@@ -11,7 +11,7 @@ if (isset($_POST['toggle_status'])) {
     $booking_id = intval($_POST['booking_id']);
     $current_status = $_POST['current_status'];
 
-    $new_status = ($current_status === 'SUCCESS') ? 'PENDING' : 'SUCCESS';
+    $new_status = ($current_status === 'PAID') ? 'PENDING' : 'PAID';
 
     $update = $conn->prepare("UPDATE bookings SET payment_status = ? WHERE id = ?");
     $update->bind_param("si", $new_status, $booking_id);
@@ -102,7 +102,7 @@ if (!$result) {
                         <form method="POST" style="margin:0;">
                             <input type="hidden" name="booking_id" value="<?= $row['booking_id'] ?>">
                             <input type="hidden" name="current_status" value="<?= $row['payment_status'] ?>">
-                            <?php if ($row['payment_status'] === 'SUCCESS'): ?>
+                            <?php if ($row['payment_status'] === 'PAID'): ?>
                                 <button type="submit" name="toggle_status" class="btn-undo">Undo Approve</button>
                             <?php else: ?>
                                 <button type="submit" name="toggle_status" class="btn-approve">Approve</button>

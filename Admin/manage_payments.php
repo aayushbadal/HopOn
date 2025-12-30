@@ -11,7 +11,7 @@ if (isset($_GET['payment_id'], $_GET['action'])) {
     $action = $_GET['action'];
 
     if ($action === 'success') {
-        $stmt = $conn->prepare("UPDATE bookings SET payment_status = 'SUCCESS' WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE bookings SET payment_status = 'PAID' WHERE id = ?");
     } elseif ($action === 'pending') {
         $stmt = $conn->prepare("UPDATE bookings SET payment_status = 'PENDING' WHERE id = ?");
     }
@@ -131,10 +131,10 @@ $result = $stmt->get_result();
                     <td><?= htmlspecialchars($row['payment_ref']) ?></td>
                     <td><?= htmlspecialchars($row['booking_date']) ?></td>
                     <td>
-                        <?php if($row['payment_status'] === 'PENDING'): ?>
-                            <a href="?payment_id=<?= $row['booking_id'] ?>&action=success" class="btn btn-success">Approve</a>
+                        <?php if($row['payment_status'] === 'PAID'): ?>
+                            <a href="?payment_id=<?= $row['booking_id'] ?>&action=pending" class="btn btn-undo">Undo</a>
                         <?php else: ?>
-                            <a href="?payment_id=<?= $row['booking_id'] ?>&action=pending" class="btn btn-warning">Undo</a>
+                            <a href="?payment_id=<?= $row['booking_id'] ?>&action=success" class="btn btn-success">Approve</a>
                         <?php endif; ?>
                     </td>
                 </tr>
