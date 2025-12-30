@@ -94,7 +94,6 @@ $result = $stmt->get_result();
                 <option value="">All Methods</option>
                 <option value="Khalti" <?= $method_filter === 'Khalti' ? 'selected' : '' ?>>Khalti</option>
                 <option value="eSewa" <?= $method_filter === 'eSewa' ? 'selected' : '' ?>>eSewa</option>
-                <option value="Card" <?= $method_filter === 'Card' ? 'selected' : '' ?>>Card</option>
             </select>
             <button type="submit">Filter</button>
         </form>
