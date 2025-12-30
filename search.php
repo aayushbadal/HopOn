@@ -9,7 +9,6 @@ if (isset($_GET['start-point']) && isset($_GET['end-point'])) {
 $stmt = $conn->prepare("
     SELECT 
         vehicle_lists.id,
-        vehicle_lists.image_url,
         vehicle_lists.starttime,
         vehicle_lists.endtime,
         routes.startin,
@@ -37,39 +36,44 @@ $stmt = $conn->prepare("
 ?>
 
     <section id="vehicles" class="vehicles-section">
-        <div class="container">
-            <h2 class="section-title">Available Vehicles</h2>
+    <div class="container">
+        <h2 class="section-title">Available Vehicles</h2>
+
+        <?php if ($vehicle_list->num_rows === 0): ?>
+            <div class="no-vehicle-message">
+                <p>Route vehicle not found</p>
+                <span>Please try a different route or date</span>
+            </div>
+
+        <?php else: ?>
             <div class="vehicles-grid">
-                <!-- vehicles -->
-                <?php foreach($vehicle_list as $vehicle):?>
-                <div class="vehicle-card">
-                    <img src="<?=$vehicle['image_url']?>" class="vehicle-poster" alt="">
-                    <div class="vehicle-details">
-                        <div class="vehicle-info">
-                            <div class="start-to-end">
-                                <span><strong><?= $vehicle['startin'] ?>  To  </strong></span>
-                                <span><strong><?= $vehicle['destination'] ?></strong></span>
-                            </div>
-                            
-                            
-                            <div class="timing">
-                                    
-                                <span> <?= $vehicle['starttime'] ?> - - To - - </span>
-                                <span> <?= $vehicle['endtime'] ?></span>
-                            </div>
-                            <div class="pricing">
-                                <div class="price">
-                                    <span>NPR <?= $vehicle['price'] ?></span>
+                <?php while ($vehicle = $vehicle_list->fetch_assoc()): ?>
+                    <div class="vehicle-card">
+                        <img src="./assets/images/Bus.png" class="vehicle-poster" alt="">
+                        <div class="vehicle-details">
+                            <div class="vehicle-info">
+                                <div class="start-to-end">
+                                    <strong><?= htmlspecialchars($vehicle['startin']) ?> to <?= htmlspecialchars($vehicle['destination']) ?></strong>
+                                </div>
+
+                                <div class="timing">
+                                    <?= htmlspecialchars($vehicle['starttime']) ?> - <?= htmlspecialchars($vehicle['endtime']) ?>
+                                </div>
+
+                                <div class="pricing">
+                                    NPR <?= htmlspecialchars($vehicle['price']) ?>
                                 </div>
                             </div>
+
+                            <a href="booking.php?vehicleId=<?= $vehicle['id'] ?>" class="book-btn">Book</a>
                         </div>
-                        <a href="booking.php?vehicleId=<?= $vehicle['id'] ?>" class="book-btn">Book</a>
                     </div>
-                </div>
-                <?php endforeach; ?>
+                <?php endwhile; ?>
             </div>
-        </div>
-    </section>
+        <?php endif; ?>
+    </div>
+</section>
+
 
 
 
