@@ -69,6 +69,19 @@ try {
 
     $stmt->close();
     $conn->commit();
+    /* =========================
+   REMOVE SEAT LOCKS (SUCCESS)
+========================= */
+$session_id = session_id();
+
+$unlock = $conn->prepare("
+    DELETE FROM seat_locks
+    WHERE session_id = ?
+");
+$unlock->bind_param("s", $session_id);
+$unlock->execute();
+$unlock->close();
+
 
     header("Location: booking_confirmation.php?ref=$booking_reference");
     exit();

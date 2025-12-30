@@ -50,6 +50,50 @@ if ($seat_count <= 0) {
     die("Invalid seat selection!");
 }
 
+$session_id = session_id();
+
+/* Clear expired locks */
+$conn->query("DELETE FROM seat_locks WHERE expires_at < NOW()");
+
+/* Lock seats (5 minutes) */
+$lock_stmt = $conn->prepare("
+    INSERT INTO seat_locks
+    (vehicle_id, route_date_id, seat_number, session_id, expires_at)
+    VALUES (?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL 5 MINUTE))
+");
+
+foreach ($seats as $seat) {
+
+    // Check if seat already booked
+    $checkBooked = $conn->prepare("
+        SELECT 1 FROM booking_seats bs
+        JOIN bookings b ON bs.booking_id = b.id
+        WHERE b.vehicle_id = ? AND b.route_date_id = ? AND bs.seat_number = ?
+    ");
+    $checkBooked->bind_param("iii", $vehicle_id, $route_date_id, $seat);
+    $checkBooked->execute();
+    if ($checkBooked->get_result()->num_rows > 0) {
+        die("Seat $seat already booked.");
+    }
+
+    // Check if seat already locked
+    $checkLocked = $conn->prepare("
+        SELECT 1 FROM seat_locks
+        WHERE vehicle_id = ? AND route_date_id = ? AND seat_number = ?
+        AND expires_at > NOW()
+    ");
+    $checkLocked->bind_param("iii", $vehicle_id, $route_date_id, $seat);
+    $checkLocked->execute();
+    if ($checkLocked->get_result()->num_rows > 0) {
+        die("Seat $seat is temporarily locked.");
+    }
+
+    // Lock seat
+    $lock_stmt->bind_param("iiis", $vehicle_id, $route_date_id, $seat, $session_id);
+    $lock_stmt->execute();
+}
+
+
 /* =========================
    BOOKING REFERENCE
 ========================= */

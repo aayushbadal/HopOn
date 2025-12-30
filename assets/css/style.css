@@ -1578,3 +1578,47 @@ footer::before {
 }
 
 
+/*==========================
+            ESEWA FAILURE
+=============================*/
+
+
+.failure_container{
+    background-color: var(--secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+}
+
+    /* Container for the message */
+.esewa_failure_h2 {
+    background-color: var(--secondary);
+    color: #d8000c;
+    padding: 20px 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+/* Retry link styling */
+.esewa_failure_a {
+    display: inline-block;
+    text-decoration: none;
+    background-color: var(--primary);
+    color: #fff;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+    text-align: center;
+}
+
+.esewa_failure_a:hover {
+    background-color: var(--hover);
+    transform: scale(1.05);
+}
+

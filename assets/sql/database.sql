@@ -78,3 +78,17 @@ CREATE TABLE IF NOT EXISTS op_users (
     PRIMARY KEY (id)
 );
 
+
+
+
+CREATE TABLE seat_locks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    vehicle_id INT NOT NULL,
+    route_date_id INT NOT NULL,
+    seat_number INT NOT NULL,
+    session_id VARCHAR(128) NOT NULL,
+    expires_at DATETIME NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    UNIQUE KEY unique_seat (vehicle_id, route_date_id, seat_number)
+);
