@@ -68,7 +68,7 @@ $occupiedSeatsJson = json_encode($occupiedSeats);
                     <input type="hidden" name="total_price" id="total-price" value="0">
 
                     <div class="form-group">
-                        <label for="" style="color:black;">Select Date</label>
+                        <label for="">Select Date</label>
                         <select name="route_date_id" required>
                             <option value="" disabled selected hidden>Select Date</option>
                             <?php foreach($route_dates as $routedate): ?>
