@@ -69,18 +69,26 @@ ob_start();
     </header>
     <div id="searchbar">
     <form action="search.php" method="get" class="search-bar">
-        <div class="search-group">
-            <label for="start-point">Start:</label>
-            <input type="text" name="start-point" id="start-point" placeholder="Enter starting point" required />
-        </div>
-        <div class="search-group">
-            <label for="end-point">Destination:</label>
-            <input type="text" name="end-point" id="end-point" placeholder="Enter destination" required />
-        </div>
-        <div class="search-group">
-            <button type="submit" class="search-btn">Search</button>
-        </div>
+    <div class="search-group">
+        <label for="start-point">Start:</label>
+        <input type="text" name="start-point" id="start-point" required />
+    </div>
+
+    <div class="search-group">
+        <label for="end-point">Destination:</label>
+        <input type="text" name="end-point" id="end-point" required />
+    </div>
+
+    <div class="search-group">
+        <label for="travel-date">Date:</label>
+        <input type="date" name="travel-date" id="travel-date" required />
+    </div>
+
+    <div class="search-group">
+        <button type="submit" class="search-btn">Search</button>
+    </div>
     </form>
+
 </div>
 
 <script src="./assets/js/theme.js"></script>

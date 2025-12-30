@@ -1,35 +1,42 @@
 <?php
     require_once"./includes/header.php";
 // Check if the form parameters exist
-if (isset($_GET['start-point']) && isset($_GET['end-point'])) {
+if (
+    isset($_GET['start-point']) &&
+    isset($_GET['end-point']) &&
+    isset($_GET['travel-date'])
+) {
+
     $start = trim($_GET['start-point']);
-    $end = trim($_GET['end-point']);
+    $end   = trim($_GET['end-point']);
+    $date  = $_GET['travel-date'];
+
 
     // Prepare statement to prevent SQL injection
 $stmt = $conn->prepare("
     SELECT 
-        vehicle_lists.id,
-        vehicle_lists.starttime,
-        vehicle_lists.endtime,
-        routes.startin,
-        routes.destination,
-        routes.price 
-    FROM routes
-    INNER JOIN vehicle_lists 
-        ON routes.id = vehicle_lists.route_id
-    WHERE routes.startin = ? 
-      AND routes.destination = ?
+        vl.id,
+        vl.starttime,
+        vl.endtime,
+        r.startin,
+        r.destination,
+        r.price,
+        rd.routing_date
+    FROM routes r
+    INNER JOIN vehicle_lists vl ON r.id = vl.route_id
+    INNER JOIN route_date rd ON vl.id = rd.vehicle_id
+    WHERE r.startin = ?
+      AND r.destination = ?
+      AND rd.routing_date = ?
 ");
 
+$stmt->bind_param("sss", $start, $end, $date);
+$stmt->execute();
+$vehicle_list = $stmt->get_result();
 
-
-    $stmt->bind_param("ss", $start, $end);
-    $stmt->execute();
-
-    $vehicle_list = $stmt->get_result();
 } else {
     // Redirect back if parameters are missing
-    header("Location: index");
+    header("Location: index.php");
     exit;
 }
 
