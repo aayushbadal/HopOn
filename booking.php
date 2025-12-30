@@ -1,171 +1,192 @@
 <?php
 require_once "./includes/header.php";
 
-$vehicle_id = isset($_GET['vehicleId']) ? intval($_GET['vehicleId']) : 1;
-
-// Fetch vehicle details
-$vehicle_query = "SELECT * FROM routes 
-                  JOIN vehicle_lists ON routes.id = vehicle_lists.route_id 
-                  WHERE vehicle_lists.id = ?";
-$stmt = mysqli_prepare($conn, $vehicle_query);
-mysqli_stmt_bind_param($stmt, "i", $vehicle_id);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
-$vehicle_list = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-// Fetch routing dates
-$route_query = "SELECT * FROM route_date WHERE vehicle_id = ?";
-$stmt2 = mysqli_prepare($conn, $route_query);
-mysqli_stmt_bind_param($stmt2, "i", $vehicle_id);
-mysqli_stmt_execute($stmt2);
-$route_result = mysqli_stmt_get_result($stmt2);
-$route_dates = mysqli_fetch_all($route_result, MYSQLI_ASSOC);
-
-// Fetch occupied seats
-$occupiedSeats = [];
-$sql = "SELECT seat_number FROM booking_seats 
-        JOIN bookings ON booking_seats.booking_id = bookings.id 
-        WHERE bookings.vehicle_id = ?";
-$stmt3 = $conn->prepare($sql);
-$stmt3->bind_param("i", $vehicle_id);
-$stmt3->execute();
-$result3 = $stmt3->get_result();
-while ($row = $result3->fetch_assoc()) {
-    $occupiedSeats[] = intval($row['seat_number']);
+$vehicle_id = isset($_GET['vehicleId']) ? intval($_GET['vehicleId']) : 0;
+if ($vehicle_id <= 0) {
+    echo "<p>Invalid vehicle.</p>";
+    require_once "./includes/footer.php";
+    exit;
 }
 
-// Encode occupied seats for JS
-$occupiedSeatsJson = json_encode($occupiedSeats);
+/* Fetch vehicle + route info */
+$vehicle_query = "
+    SELECT routes.*, vehicle_lists.*
+    FROM routes
+    JOIN vehicle_lists ON routes.id = vehicle_lists.route_id
+    WHERE vehicle_lists.id = ?
+";
+$stmt = $conn->prepare($vehicle_query);
+$stmt->bind_param("i", $vehicle_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$vehicle = $result->fetch_assoc();
+
+if (!$vehicle) {
+    echo "<p>No vehicle details found.</p>";
+    require_once "./includes/footer.php";
+    exit;
+}
+
+/* Fetch route dates */
+$route_query = "SELECT * FROM route_date WHERE vehicle_id = ?";
+$stmt2 = $conn->prepare($route_query);
+$stmt2->bind_param("i", $vehicle_id);
+$stmt2->execute();
+$route_dates = $stmt2->get_result()->fetch_all(MYSQLI_ASSOC);
+
+$totalSeats = $vehicle['total_seats'] ?: 33;
 ?>
 
 <section id="booking-section">
     <div class="container">
         <div class="booking-container">
-            <?php if(!empty($vehicle_list)): ?>
-                <?php $vehicle = $vehicle_list[0]; ?>
-                <div class="bus-detail">
-                    <div class="booking-poster">
-                        <img src="./assets/images/Bus.png" alt="">
-                    </div>
-                    <div class="booking-details">
-                        <h2 class="booking-title"><?= htmlspecialchars($vehicle['startin']) ?> To <?= htmlspecialchars($vehicle['destination']) ?></h2>
-                        <div class="booking-info">
-                            <p><strong>Boarding Time: </strong><?= htmlspecialchars($vehicle['starttime']) ?></p>
-                            <p><strong>Dropping Time: </strong><?= htmlspecialchars($vehicle['endtime']) ?></p>
-                            <p><strong>Facilities: </strong><?= htmlspecialchars($vehicle['facilities']) ?></p>
-                            <p><strong>Total Seats: </strong><?= $vehicle['total_seats'] ?: 33 ?></p>
-                            <p><strong>Available Seats: </strong><span id="available-seats"><?= ($vehicle['total_seats'] ?: 33) - count($occupiedSeats) ?></span></p>
-                            <p><strong>Bus Number: </strong><?= htmlspecialchars($vehicle['vehicle_number']) ?></p>
-                            <p><strong>Driver Name: </strong><?= htmlspecialchars($vehicle['driver_name']) ?></p>
-                            <p><strong>Driver Phone Number: </strong><?= htmlspecialchars($vehicle['driver_phone_number']) ?></p>
-                        </div>
-                    </div>
+
+            <!-- BUS DETAILS -->
+            <div class="bus-detail">
+                <div class="booking-poster">
+                    <img src="./assets/images/Bus.png" alt="Bus">
                 </div>
 
-                <form action="./esewa_process_booking.php" method="POST" id="booking-form">
-                    <input type="hidden" name="vehicle_id" value="<?= $vehicle_id ?>">
-                    <input type="hidden" name="selected_seats" id="selected-seats" value="">
-                    <input type="hidden" name="total_price" id="total-price" value="0">
+                <div class="booking-details">
+                    <h2 class="booking-title">
+                        <?= htmlspecialchars($vehicle['startin']) ?> →
+                        <?= htmlspecialchars($vehicle['destination']) ?>
+                    </h2>
 
-                    <div class="form-group">
-                        <label for="">Select Date</label>
-                        <select name="route_date_id" required>
-                            <option value="" disabled selected hidden>Select Date</option>
-                            <?php foreach($route_dates as $routedate): ?>
-                                <option value="<?= $routedate['id'] ?>"><?= date('d/m/Y', strtotime($routedate['routing_date'])) ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                    <div class="booking-info">
+                        <p><strong>Boarding Time:</strong> <?= htmlspecialchars($vehicle['starttime']) ?></p>
+                        <p><strong>Dropping Time:</strong> <?= htmlspecialchars($vehicle['endtime']) ?></p>
+                        <p><strong>Facilities:</strong> <?= htmlspecialchars($vehicle['facilities']) ?></p>
+                        <p><strong>Total Seats:</strong> <?= $totalSeats ?></p>
+                        <p><strong>Available Seats:</strong>
+                            <span id="available-seats">Select a date</span>
+                        </p>
+                        <p><strong>Bus Number:</strong> <?= htmlspecialchars($vehicle['vehicle_number']) ?></p>
+                        <p><strong>Driver:</strong> <?= htmlspecialchars($vehicle['driver_name']) ?></p>
+                        <p><strong>Driver Phone:</strong> <?= htmlspecialchars($vehicle['driver_phone_number']) ?></p>
                     </div>
+                </div>
+            </div>
 
-                    <div class="seat-details">
-                        <h3>Select Your Seat</h3>
-                        <div class="front">Front of Bus</div>
-                        <div class="bus" id="bus">
-                            <!-- Seats generated by JS -->
-                        </div> 
-                    </div>
+            <!-- BOOKING FORM -->
+            <form action="./esewa_process_booking.php" method="POST" id="booking-form">
+                <input type="hidden" name="vehicle_id" value="<?= $vehicle_id ?>">
+                <input type="hidden" name="selected_seats" id="selected-seats">
+                <input type="hidden" name="total_price" id="total-price">
 
-                    <div class="form-group total-price">
-                        <strong>Total Price: </strong><span>Rs. 0</span>
-                    </div>
+                <div class="form-group">
+                    <label>Select Date</label>
+                    <select name="route_date_id" id="route-date" required>
+                        <option value="" disabled selected hidden>Select Date</option>
+                        <?php foreach ($route_dates as $date): ?>
+                            <option value="<?= $date['id'] ?>">
+                                <?= date('d/m/Y', strtotime($date['routing_date'])) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
 
-                    <button type="submit" id="pay-button" class="confirm-btn">Confirm Booking</button>
-                </form>
-            <?php else: ?>
-                <p>No vehicle details found.</p>
-            <?php endif; ?>
+                <div class="seat-details">
+                    <h3>Select Your Seat</h3>
+                    <div class="front">Front of Bus</div>
+                    <div class="bus" id="bus"></div>
+                </div>
+
+                <div class="form-group total-price">
+                    <strong>Total Price:</strong>
+                    <span>Rs. 0</span>
+                </div>
+
+                <button type="submit" id="pay-button" class="confirm-btn" disabled>
+                    Confirm Booking
+                </button>
+            </form>
+
         </div>
     </div>
 </section>
 
-
 <script>
+const totalSeats = <?= $totalSeats ?>;
+const ticketPrice = <?= (int)$vehicle['price'] ?>;
+const vehicleId = <?= $vehicle_id ?>;
 
-document.getElementById('booking-form').addEventListener('submit', function (e) {
-    if (selectedSeats.length === 0) {
-        alert("Please select at least one seat!");
-        e.preventDefault(); // stop form submission
-    }
-});
-
-
-const busTicketPrice = <?= $vehicle['price'] ?>;
-const totalSeats = <?= $vehicle['total_seats'] ?: 33 ?>;
-const occupiedSeats = <?= $occupiedSeatsJson ?>;
 const bus = document.getElementById('bus');
-let selectedSeats = [];
+const dateSelect = document.getElementById('route-date');
+const payButton = document.getElementById('pay-button');
+const availableSeatsEl = document.getElementById('available-seats');
 
 const selectedSeatsInput = document.getElementById('selected-seats');
 const totalPriceInput = document.getElementById('total-price');
-const availableSeatsDisplay = document.getElementById('available-seats');
 
-// Generate seats dynamically
-for (let i = 1; i <= totalSeats; i++) {
-    const seat = document.createElement('div');
-    seat.classList.add('seat');
-    seat.innerHTML = `<i class="fas fa-chair"></i>`;
-    seat.title = `Seat ${i}`;
+let occupiedSeats = [];
+let selectedSeats = [];
 
-    if (occupiedSeats.includes(i)) {
-        seat.classList.add('occupied');
-    }
+/* Load seats when date changes */
+dateSelect.addEventListener('change', function () {
+    payButton.disabled = false;
+    fetchOccupiedSeats(this.value);
+});
 
-    seat.addEventListener('click', () => {
-        if (!seat.classList.contains('occupied')) {
-            seat.classList.toggle('selected');
-            if (seat.classList.contains('selected')) {
+function fetchOccupiedSeats(routeDateId) {
+    fetch(`get_occupied_seats.php?vehicle_id=${vehicleId}&route_date_id=${routeDateId}`)
+        .then(res => res.json())
+        .then(data => {
+            occupiedSeats = data;
+            selectedSeats = [];
+            renderSeats();
+            updateSummary();
+        });
+}
+
+function renderSeats() {
+    bus.innerHTML = "";
+
+    for (let i = 1; i <= totalSeats; i++) {
+        const seat = document.createElement('div');
+        seat.className = "seat";
+        seat.innerHTML = `<i class="fas fa-chair"></i>`;
+        seat.title = `Seat ${i}`;
+
+        if (occupiedSeats.includes(i)) {
+            seat.classList.add("occupied");
+        }
+
+        seat.addEventListener('click', () => {
+            if (seat.classList.contains("occupied")) return;
+
+            seat.classList.toggle("selected");
+
+            if (seat.classList.contains("selected")) {
                 selectedSeats.push(i);
             } else {
                 selectedSeats = selectedSeats.filter(s => s !== i);
             }
-            updateBookingSummary();
-        }
-    });
+            updateSummary();
+        });
 
-    bus.appendChild(seat);
+        bus.appendChild(seat);
+    }
 }
 
-function updateBookingSummary() {
+function updateSummary() {
     selectedSeatsInput.value = selectedSeats.join(",");
-    totalPriceInput.value = selectedSeats.length * busTicketPrice;
+    totalPriceInput.value = selectedSeats.length * ticketPrice;
 
-    // Update available seats
-    const availableSeats = totalSeats - occupiedSeats.length - selectedSeats.length;
-    if (availableSeatsDisplay) {
-        availableSeatsDisplay.textContent = availableSeats;
-    }
+    const available = totalSeats - occupiedSeats.length - selectedSeats.length;
+    availableSeatsEl.textContent = available;
 
-    // Update total price display
-    const totalDisplay = document.querySelector('.total-price span');
-    if (totalDisplay) {
-        totalDisplay.textContent = "Rs. " + (selectedSeats.length * busTicketPrice);
-    }
-
-    
-
+    document.querySelector('.total-price span').textContent =
+        "Rs. " + (selectedSeats.length * ticketPrice);
 }
+
+/* Prevent empty submission */
+document.getElementById('booking-form').addEventListener('submit', function (e) {
+    if (!dateSelect.value || selectedSeats.length === 0) {
+        alert("Please select date and seats.");
+        e.preventDefault();
+    }
+});
 </script>
 
-<?php
-require_once "./includes/footer.php";
-?>
+<?php require_once "./includes/footer.php"; ?>

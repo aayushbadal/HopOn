@@ -45,7 +45,7 @@ ob_start();
         <?php endif; ?>
         <a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
         <a href="manage_routes.php"><i class="fas fa-route"></i> Routes</a>
-        <a href="manage_bus.php"><i class="fas fa-bus"></i> Manage Buses</a>
+        <a href="manage_bus.php"><i class="fas fa-bus"></i> Buses</a>
         <a href="manage_schedules.php"><i class="fas fa-calendar-alt"></i> Schedules</a>
         <a href="manage_bookings.php"><i class="fas fa-ticket-alt"></i> Bookings</a>
         <a href="manage_users.php"><i class="fas fa-users"></i> Customers</a>
