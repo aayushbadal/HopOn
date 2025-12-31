@@ -58,7 +58,7 @@ ob_start();
 <head>
   <meta charset="UTF-8">
   <title>HopOn - Operator Dashboard</title>
-  <link rel="stylesheet" href="./assets/css/dashboard.css">
+  <link rel="stylesheet" href="./assets/css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <link rel="icon" type="image/jpg" href="./assets/images/Logo.jpg">
